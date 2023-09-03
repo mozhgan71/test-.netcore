@@ -1,0 +1,34 @@
+div {
+    background-color: rgb(56, 175, 175);
+    width: 100%;
+    height: 100%;
+
+    form {
+        display: flex;
+        background-color: rgb(56, 175, 175);
+        flex-direction: column;
+        align-items: center;
+        padding: 1rem;
+        font-weight: bold;
+        gap: 1rem;
+
+        mat-form-field {
+            font-size: larger;
+        }
+    }
+
+    .down {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-top: 1rem;
+        gap: 0.5rem;
+        background-color: rgb(56, 175, 175);
+    }
+
+    button {
+        color: black;
+        font-size: large;
+    }
+}

@@ -1,0 +1,60 @@
+<div>
+    <form [formGroup]="userFg">
+        <h1>فرم محاسبه سوخت</h1>
+        <mat-form-field>
+            <mat-label>تاریخ سوخت گیری</mat-label>
+            <input id="date" name="date" value={{nowDate}} matInput>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>نام راننده</mat-label>
+            <mat-select formControlName="driverNameCtrl">
+                <mat-option id="driverName" *ngFor="let item of formResults"
+                    (onSelectionChange)="findNameCar(item.driverId!)"
+                    value={{item.driverName}}>{{item.driverName}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>مقدار(لیتر)</mat-label>
+            <input id="amount" name="amount" matInput formControlName="amountCtrl">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>قیمت روز</mat-label>
+            <input id="rate" matInput formControlName="rateCtrl">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>نوع خودرو</mat-label>
+            <input readonly value={{nameCar}} matInput formControlName="typeCarCtrl">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>قابل پرداخت</mat-label>
+            <input readonly matInput formControlName="payableCtrl">
+        </mat-form-field>
+        <button (click)="calcPay()" mat-raised-button color="primary">محاسبه مبلغ قابل پرداخت</button>
+        <button (click)="submitUser()" mat-raised-button color="primary" [disabled]="">ذخیره</button>
+    </form>
+    <hr>
+    <hr>
+    <div class="down">
+        <h1>لیست مجموع مصارف</h1>
+        <div class="down">
+            <ul *ngFor="let car of results">
+                <li> {{car.typeCar}} :کد خودرو</li>
+                <li>جمع مقدار: {{car.totalAmount}}</li>
+                <li>جمع پرداخت: {{car.totalPay}}</li>
+                <div class="div-button">
+                    <button (click)="showReport(car.typeCar)" class="button" mat-raised-button color="warn">نمایش
+                        گزارش مصرف</button>
+                </div>
+            </ul>
+        </div>
+        <div class="down">
+            <ul *ngFor="let item of reports">
+                <li> تاریخ سوخت گیری: {{item.dateRefueling}}</li>
+                <li>مقدار: {{item.amount}}</li>
+                <li>نرخ قیمت: {{item.rate}}</li>
+                <li> {{item.typeCar}} :کد خودرو</li>
+                <li>قابل پرداخت: {{item.payable}}</li>
+            </ul>
+        </div>
+    </div>
+</div>
