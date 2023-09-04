@@ -20,9 +20,10 @@ export class FuelComponent {
   res: Car | undefined;
   nameCar: string | undefined;
   payable: number | null | undefined;
-  rateFuel: RateFuel | undefined;
-  rateResults: RateFuel[] | undefined;
+  rateFuel: number | undefined;
+  rateResults: RateFuel | undefined;
   dateToCheck: string | undefined;
+  
   nowDate = Date();
 
   constructor(private fb: FormBuilder, private http: HttpClient) {
@@ -30,20 +31,11 @@ export class FuelComponent {
     this.showAll();
     this.createDate();
     this.showAllInForm();
-    // this.checkDate();
-    console.log(this.nowDate);
+    this.checkDate(new Date());
 
   }
-  createDate(): void {
-    let dataObj = new Date();
-    let month = dataObj.getUTCMonth() + 1;
-    let day = dataObj.getUTCDate();
-    let year = dataObj.getFullYear();
 
-    this.nowDate = year + "/" + month + "/" + day;
-  }
-
-  //#region Create Form Group/controler (AbstractControl)
+  //#region Create Form Group/controller (AbstractControl)
   userFg = this.fb.group({ // formGroup
     driverNameCtrl: ['', [Validators.required]],
     dateCtrl: ['',],
@@ -82,6 +74,16 @@ export class FuelComponent {
     this.PayableCtrl.setValue(this.payable);
     console.log(this.payable);
   }
+
+  createDate(): void {
+    let dataObj = new Date();
+    let month = dataObj.getUTCMonth() + 1;
+    let day = dataObj.getUTCDate();
+    let year = dataObj.getFullYear();
+
+    this.nowDate = year + "/" + month + "/" + day;
+  }
+
   findNameCar(id: string): void {
     // debugger;
     this.http.get<Car>('http://localhost:5000/api/car/get-by-id/' + id).subscribe(
@@ -124,7 +126,6 @@ export class FuelComponent {
     );
     this.userFg.reset();
   }
-  //#endregion 
 
   showAll(): void {
     this.http.get<CalcCost[]>('http://localhost:5000/api/calccost/').subscribe(
@@ -162,22 +163,16 @@ export class FuelComponent {
     );
   }
 
-  // checkDate() {
-  //   this.http.get<RateFuel[]>('http://localhost:5000/api/fuelrate/').subscribe(
-  //     {
-  //       next: response => {
-  //         this.rateResults = response
-  //         console.log(this.rateResults);
-  //         this.rateResults.forEach(item => {
-  //           let startDate = item.fromDate;
-  //           let endDate = item.untilDate;
-  //           let dateToCheck = Date().toString();
-  //           console.log(startDate);
-  //           console.log(endDate);
-  //           console.log(dateToCheck);
-  //         });
-  //       }
-  //     }
-  //   );
-  // }
+  checkDate(myDate: Date) {
+    this.http.get<RateFuel>('http://localhost:5000/api/fuelrate/check-date/' + myDate).subscribe(
+      {
+        next: response => {
+          this.rateResults = response
+          this.rateFuel = this.rateResults.rate;
+          console.log(this.rateFuel);
+        }
+      }
+    );
+  }
 }
+  //#endregion

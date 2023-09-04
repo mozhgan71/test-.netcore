@@ -47,16 +47,16 @@ public class FuelRateController : ControllerBase
         return rates;
     }
 
-    // [HttpGet("check-date")]
-    // public ActionResult<IEnumerable<FuelRate>> GetRate(DateTime date)
-    // {
-    //     List<FuelRate> rates = _collection.Find<FuelRate>(new BsonDocument()).ToList();
+    [HttpGet("check-date/{userInput}")]
+    public ActionResult<FuelRate> GetRate(DateTime userInput)
+    {
+        FuelRate rate = _collection.Find<FuelRate>(doc => Convert.ToDateTime(doc.FromDate) <= Convert.ToDateTime(userInput) && Convert.ToDateTime(doc.UntilDate) >= Convert.ToDateTime(userInput)).FirstOrDefault();
 
-    //     if (!rates.Any())
-    //     {
-    //         return Ok("Your ratelist is empty.");
-    //     }
+        if (rate is null)
+        {
+            return Ok("Your ratelist is empty.");
+        }
 
-    //     return rates;
-    // }
+        return rate;
+    }
 }
