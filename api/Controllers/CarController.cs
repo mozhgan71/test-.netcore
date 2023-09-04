@@ -33,8 +33,8 @@ public class CarController : ControllerBase
         _collection.InsertOne(car);
 
         return car;
-
     }
+
     [HttpGet("get-by-id/{userInput}")]
     public ActionResult<Car> GetById(string userInput)
     {
@@ -47,6 +47,7 @@ public class CarController : ControllerBase
 
         return result;
     }
+
     [HttpGet]
     public ActionResult<IEnumerable<Car>> GetAll()
     {

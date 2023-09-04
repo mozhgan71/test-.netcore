@@ -32,8 +32,8 @@ public class FuelRateController : ControllerBase
         _collection.InsertOne(rate);
 
         return rate;
-
     }
+
     [HttpGet]
     public ActionResult<IEnumerable<FuelRate>> GetAll()
     {
