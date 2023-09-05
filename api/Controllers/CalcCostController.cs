@@ -58,7 +58,7 @@ public class CalcCostController : ControllerBase
             {
                 typeCar = group.Key,
                 totalAmount = group.Sum(y => y.Amount),
-                totalPay = group.Sum(y => y.Payable)
+                totalPay = group.Sum(y => y.Payable),
             }
         ).ToList();
 

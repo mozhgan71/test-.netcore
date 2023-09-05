@@ -1,6 +1,6 @@
 export interface CalcCost {
     id?: string,
-    driverName?: string,
+    driverName: string,
     dateRefueling?: string,
     amount: number,
     totalAmount?: number,

@@ -16,10 +16,11 @@
         <mat-form-field>
             <mat-label>مقدار(لیتر)</mat-label>
             <input id="amount" name="amount" matInput formControlName="amountCtrl">
+            <!-- <mat-hint>مقدار بنزین خریداری شده را وارد کنید</mat-hint> -->
         </mat-form-field>
         <mat-form-field>
             <mat-label>نرخ قیمت</mat-label>
-            <input id="rate" matInput formControlName="rateCtrl"> <!--value={{rateFuel}}-->
+            <input readonly value={{rateFuel}} id="rate" matInput formControlName="rateCtrl">
         </mat-form-field>
         <mat-form-field>
             <mat-label>نوع خودرو</mat-label>
@@ -30,7 +31,7 @@
             <input readonly matInput formControlName="payableCtrl">
         </mat-form-field>
         <button (click)="calcPay()" mat-raised-button color="primary">محاسبه مبلغ قابل پرداخت</button>
-        <button (click)="submitUser()" mat-raised-button color="primary" [disabled]="">ذخیره</button>
+        <button (click)="submitUser()" mat-raised-button color="primary" [disabled]="userFg.invalid">ذخیره</button>
     </form>
     <hr>
     <hr>
@@ -38,7 +39,7 @@
         <h1>لیست مجموع مصارف</h1>
         <div class="down">
             <ul *ngFor="let car of results">
-                <li> {{car.typeCar}} :کد خودرو</li>
+                <li> {{car.typeCar}} :نام خودرو</li>
                 <li>جمع مقدار: {{car.totalAmount}}</li>
                 <li>جمع پرداخت: {{car.totalPay}}</li>
                 <div class="div-button">
@@ -52,7 +53,7 @@
                 <li> تاریخ سوخت گیری: {{item.dateRefueling}}</li>
                 <li>مقدار: {{item.amount}}</li>
                 <li>نرخ قیمت: {{item.rate}}</li>
-                <li> {{item.typeCar}} :کد خودرو</li>
+                <li>{{item.driverName}}: نام راننده</li>
                 <li>قابل پرداخت: {{item.payable}}</li>
             </ul>
         </div>

@@ -23,7 +23,7 @@ export class FuelComponent {
   rateFuel: number | undefined;
   rateResults: RateFuel | undefined;
   dateToCheck: string | undefined;
-  
+
   nowDate = Date();
 
   constructor(private fb: FormBuilder, private http: HttpClient) {
@@ -31,16 +31,16 @@ export class FuelComponent {
     this.showAll();
     this.createDate();
     this.showAllInForm();
-    this.checkDate(new Date());
+    this.checkDate(this.nowDate);
 
   }
 
   //#region Create Form Group/controller (AbstractControl)
   userFg = this.fb.group({ // formGroup
     driverNameCtrl: ['', [Validators.required]],
-    dateCtrl: ['',],
+    dateCtrl: [''],
     amountCtrl: ['', [Validators.required]],
-    rateCtrl: ['', [Validators.required]],
+    rateCtrl: [''],
     typeCarCtrl: ['', [Validators.required]],
     payableCtrl: ['', [Validators.required]],
   });
@@ -70,7 +70,7 @@ export class FuelComponent {
 
   //#region Methods
   calcPay(): void {
-    this.payable = this.AmountCtrl.value * this.RateCtrl.value
+    this.payable = this.AmountCtrl.value * this.rateFuel!;
     this.PayableCtrl.setValue(this.payable);
     console.log(this.payable);
   }
@@ -81,7 +81,8 @@ export class FuelComponent {
     let day = dataObj.getUTCDate();
     let year = dataObj.getFullYear();
 
-    this.nowDate = year + "/" + month + "/" + day;
+    this.nowDate = year + "-" + month + "-" + day;
+    // this.nowDate = Date();
   }
 
   findNameCar(id: string): void {
@@ -105,9 +106,9 @@ export class FuelComponent {
 
     let item: CalcCost = {
       driverName: this.DriverNameCtrl.value,
-      dateRefueling: (Date.now).toString(),
+      dateRefueling: this.nowDate,
       amount: this.AmountCtrl.value,
-      rate: this.RateCtrl.value,
+      rate: this.rateFuel!,
       typeCar: this.TypeCarCtrl.value,
       payable: this.PayableCtrl.value
     }
@@ -116,7 +117,7 @@ export class FuelComponent {
       {
         next: res => {
           this.userRes = res;
-          console.log(res);
+          alert("Successfully registered");
         },
         error: err => {
           this.showError = err.error;
@@ -163,13 +164,17 @@ export class FuelComponent {
     );
   }
 
-  checkDate(myDate: Date) {
+  checkDate(myDate: string) {
     this.http.get<RateFuel>('http://localhost:5000/api/fuelrate/check-date/' + myDate).subscribe(
       {
         next: response => {
           this.rateResults = response
           this.rateFuel = this.rateResults.rate;
           console.log(this.rateFuel);
+        },
+        error: err => {
+          this.showError = err.error;
+          alert(this.showError);
         }
       }
     );

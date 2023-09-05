@@ -1,3 +1,4 @@
+using System.Globalization;
 using api.Models;
 using api.Settings;
 using Microsoft.AspNetCore.Mvc;
@@ -48,13 +49,17 @@ public class FuelRateController : ControllerBase
     }
 
     [HttpGet("check-date/{userInput}")]
-    public ActionResult<FuelRate> GetRate(DateTime userInput)
+    public ActionResult<FuelRate> GetRate(string userInput)
     {
-        FuelRate rate = _collection.Find<FuelRate>(doc => Convert.ToDateTime(doc.FromDate) <= Convert.ToDateTime(userInput) && Convert.ToDateTime(doc.UntilDate) >= Convert.ToDateTime(userInput)).FirstOrDefault();
+        // FuelRate rate = _collection.Find<FuelRate>(doc => Convert.ToDateTime(doc.FromDate) <= Convert.ToDateTime(userInput) && Convert.ToDateTime(doc.UntilDate) >= Convert.ToDateTime(userInput)).FirstOrDefault();
+        var rate = _collection.AsQueryable().ToList().Where<FuelRate>(doc =>
+         DateTime.ParseExact(doc.FromDate, "dd-MM-yyyy", CultureInfo.InvariantCulture) <= Convert.ToDateTime(userInput) &&
+         DateTime.ParseExact(doc.UntilDate, "dd-MM-yyyy", CultureInfo.InvariantCulture) >= Convert.ToDateTime(userInput)).FirstOrDefault()!;
+
 
         if (rate is null)
         {
-            return Ok("Your ratelist is empty.");
+            return BadRequest("baraye in tarikh nerkhi taeen nashode ast");
         }
 
         return rate;

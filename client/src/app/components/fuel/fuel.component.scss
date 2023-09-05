@@ -10,7 +10,7 @@ div {
         align-items: center;
         padding: 1rem;
         font-weight: bold;
-        gap: 1rem;
+        gap: 0.5rem;
 
         mat-form-field {
             font-size: larger;
@@ -22,7 +22,7 @@ div {
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        margin-top: 1rem;
+        margin-top: 0.5rem;
         gap: 0.5rem;
         background-color: rgb(56, 175, 175);
     }
